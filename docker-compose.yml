@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  geneontology:
+    image: mysql:8.0.11
+    restart: always
+    environment:
+      MYSQL_DATABASE: geneontology
+      MYSQL_USER: geneontology
+      MYSQL_PASSWORD: geneontology
+      MYSQL_ROOT_PASSWORD: dba3c752-4671-4bb4-9755-c2b1b1a631c0
+    command: --bind-address=0.0.0.0 --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./shared:/opt/shared
+    networks:
+      - geneontology-net
+
+networks:
+  geneontology-net:
+    external: true
