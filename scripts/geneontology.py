@@ -1,9 +1,12 @@
+from os import path
 import pronto
 import networkx as nx
 
 
 def get_obo_path():
-    return '/data/pinaweb/geneontology/go.obo'
+    script_dir = path.dirname(path.realpath(__file__))
+    go_dir = path.dirname(script_dir)
+    return path.join(go_dir, 'extra', 'go.obo')
 
 def get_curated_evidence_codes():
     return ('EXP', 'IDA', 'IPI', 'IMP', 'IGI', 'IEP', 'IC')
@@ -74,6 +77,11 @@ def find_valid_alternatives(go, alt_id_g, rel_g):
 
     return r
 
+
+def connect_through_docker_network():
+    import MySQLdb
+
+    return MySQLdb.connect(host='geneontology', port=3306, user='geneontology', password='geneontology', database='geneontology')
 
 def connect_to_docker():
     import MySQLdb
