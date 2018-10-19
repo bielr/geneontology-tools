@@ -80,6 +80,9 @@ def find_valid_alternatives(go, alt_id_g, rel_g):
     return r
 
 
+def connect_through_docker_network():
+    return MySQLdb.connect(host='geneontology', port=3306, user='geneontology', password='geneontology', database='geneontology')
+
 def connect_to_docker():
     import MySQLdb
     import docker
