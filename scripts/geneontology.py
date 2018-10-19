@@ -1,9 +1,14 @@
+from os import path
 import pronto
 import networkx as nx
 
 
 def get_obo_path():
-    return '/data/pinaweb/geneontology/go.obo'
+    script_dir = path.dirname(path.realpath(__file__))
+    geneontology_dir = path.dirname(script_dir)
+
+    # '/data/pinaweb/geneontology/extra/go.obo'
+    return path.join(geneontology_dir, 'extra', 'go.obo')
 
 def get_curated_evidence_codes():
     return ('EXP', 'IDA', 'IPI', 'IMP', 'IGI', 'IEP', 'IC')
