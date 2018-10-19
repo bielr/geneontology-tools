@@ -123,31 +123,40 @@ def get_uniprot_gene_products(cursor, uniprot_ids):
 
     return cursor.fetchall()
 
-def get_explicit_uniprot_annotations(cursor, uniprot_ids, species_ncbi, evidence_codes=get_curated_evidence_codes()):
-    cursor.execute("""
+def get_explicit_uniprot_annotations(cursor, uniprot_ids, species_ncbi=None, evidence_codes=get_curated_evidence_codes()):
+    sql = """
         select distinct
-          dbxref.xref_key     product_key,
-          association.is_not  is_not,
-          term.acc            term_acc,
-          term.term_type      term_type,
-          evidence.code       evidence_code
+          species.ncbi_taxa_id ncbi_taxa_id,
+          dbxref.xref_key      product_key,
+          association.is_not   is_not,
+          term.acc             term_acc,
+          term.term_type       term_type,
+          evidence.code        evidence_code
         from
           association
           inner join gene_product on (gene_product.id         = association.gene_product_id)
           inner join dbxref       on (dbxref.id               = gene_product.dbxref_id)
           inner join evidence     on (evidence.association_id = association.id)
           inner join term         on (term.id                 = association.term_id)
+          inner join species     on (species.id              = gene_product.species_id)
         where
-          gene_product.species_id = (select id from species where ncbi_taxa_id = %(species_ncbi)s)
-          and
           dbxref.xref_dbname like '%%uniprot%%'
           and
           dbxref.xref_key in %(uniprot_ids)s
           and
           evidence.code in %(evidence_codes)s
           and
-          (not term.is_obsolete);
-        """,
+          (not term.is_obsolete)
+      """
+
+    if species_ncbi is None:
+        sql += ";"
+    else:
+        sql += """
+          and
+          species.ncbi_taxa_id = %(species_ncbi)s;
+          """
+    cursor.execute(sql,
         {'species_ncbi': species_ncbi, 'uniprot_ids': tuple(uniprot_ids), 'evidence_codes': tuple(evidence_codes)})
 
     return cursor.fetchall()
