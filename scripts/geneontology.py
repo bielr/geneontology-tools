@@ -1,6 +1,7 @@
-from os import path
-import pronto
 import networkx as nx
+import pronto
+from os import path
+import sys
 
 
 def get_obo_path():
@@ -84,6 +85,7 @@ def connect_through_docker_network():
     import MySQLdb
     return MySQLdb.connect(host='geneontology', port=3306, user='geneontology', password='geneontology', database='geneontology')
 
+
 def connect_to_docker():
     import MySQLdb
     import docker
@@ -106,6 +108,7 @@ def connect_to_docker():
 
     return MySQLdb.connect(host=host, port=3306, user=env['MYSQL_USER'], password=env['MYSQL_PASSWORD'], database=env['MYSQL_DATABASE'])
 
+
 def get_uniprot_gene_products(cursor, uniprot_ids):
     cursor.execute("""
         select
@@ -123,6 +126,7 @@ def get_uniprot_gene_products(cursor, uniprot_ids):
         {'uniprot_ids': tuple(uniprot_ids)})
 
     return cursor.fetchall()
+
 
 def get_explicit_uniprot_annotations(cursor, uniprot_ids, species_ncbi=None, evidence_codes=get_curated_evidence_codes()):
     sql = """
@@ -162,6 +166,7 @@ def get_explicit_uniprot_annotations(cursor, uniprot_ids, species_ncbi=None, evi
 
     return cursor.fetchall()
 
+
 def get_transitive_uniprot_annotations(cursor, uniprot_ids, species_ncbi, evidence_codes=get_curated_evidence_codes()):
     cursor.execute("""
         select distinct
@@ -194,6 +199,7 @@ def get_transitive_uniprot_annotations(cursor, uniprot_ids, species_ncbi, eviden
 
     return cursor.fetchall()
 
+
 def count_protein_annotations(cursor, term_acc, evidence_codes=get_curated_evidence_codes()):
     cursor.execute("""
         select
@@ -219,3 +225,5 @@ def count_protein_annotations(cursor, term_acc, evidence_codes=get_curated_evide
     cnt, = cursor.fetchall()
     cnt, = cnt
     return cnt
+
+
