@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   geneontology:
-    image: mysql:8.0.11
+    image: mysql:8
     restart: always
     environment:
       MYSQL_DATABASE: geneontology

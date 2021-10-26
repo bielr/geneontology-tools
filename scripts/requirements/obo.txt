@@ -1,0 +1,2 @@
+pronto==0.10.*
+networkx==2.1

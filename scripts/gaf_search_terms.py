@@ -7,7 +7,7 @@ import gaf_util as gaf
 
 if __name__ == '__main__':
     uniprot_acs = sys.argv[1:]
-    assert len(go_ids) > 0
+    assert len(uniprot_acs) > 0
 
     go_onto = godb.load_go_obo()
     go_is_a_g = godb.onto_rel_graph(go_onto)

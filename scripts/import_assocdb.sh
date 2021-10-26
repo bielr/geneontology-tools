@@ -13,4 +13,4 @@ wget -t0 'http://archive.geneontology.org/latest-full/go_monthly-assocdb-data.gz
     gzip -d - | \
     docker-compose exec -T geneontology mysql geneontology -ugeneontology -pgeneontology
 
-date > import_date_assocdb.txt
+date > "$docker_dir/import_date_assocdb.txt"
